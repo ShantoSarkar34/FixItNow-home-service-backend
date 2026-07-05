@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import httpStatus from 'http-status';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import notFound from './middlewares/notFound';
+import { AuthRoutes } from './modules/auth/auth.route';
 
 const app: Application = express();
 
@@ -22,7 +23,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // TODO: mount module routers here, e.g.
-// app.use('/api/auth', authRoutes);
+app.use('/api/auth', AuthRoutes);
 
 app.use(notFound);
 app.use(globalErrorHandler);
