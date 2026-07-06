@@ -8,3 +8,29 @@ enum UserStatus {
   ACTIVE
   BANNED
 }
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentProvider {
+  STRIPE
+  SSLCOMMERZ
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  BOOKED
+}

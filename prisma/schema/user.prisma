@@ -1,13 +1,30 @@
 model User {
-  id        String     @id @default(uuid())
+  id        Int         @id @default(autoincrement())
   name      String
-  email     String     @unique
+  email     String      @unique
   password  String
-  phone     String?
   role      Role
-  status    UserStatus @default(ACTIVE)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  phone     String?
+  photo     String?
+  address   String?
+  status    UserStatus  @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  technicianProfile TechnicianProfile?
+
+  services Service[]
+
+  customerBookings Booking[] @relation("CustomerBookings")
+  technicianBookings Booking[] @relation("TechnicianBookings")
+
+  customerReviews Review[] @relation("CustomerReviews")
+  technicianReviews Review[] @relation("TechnicianReviews")
+
+  payments Payment[]
+
+  availability Availability[]
 
   @@map("users")
 }

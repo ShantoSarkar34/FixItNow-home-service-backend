@@ -1,0 +1,18 @@
+model Availability {
+  id Int @id @default(autoincrement())
+
+  technicianId Int
+  technician User @relation(fields: [technicianId], references: [id])
+
+  date DateTime
+
+  startTime String
+  endTime String
+
+  isBooked Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("avilablitiys")
+}
