@@ -32,7 +32,58 @@ const getServiceById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const createMyService = catchAsync(async (req: Request, res: Response) => {
+  const service = await ServiceService.createMyService(req.user!.id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Service created successfully',
+    data: service,
+  });
+});
+
+const getMyServices = catchAsync(async (req: Request, res: Response) => {
+  const services = await ServiceService.getMyServices(req.user!.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Your services retrieved successfully',
+    data: services,
+  });
+});
+
+const updateMyService = catchAsync(async (req: Request, res: Response) => {
+  const service = await ServiceService.updateMyService(
+    req.user!.id,
+    Number(req.params.id),
+    req.body,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Service updated successfully',
+    data: service,
+  });
+});
+
+const deleteMyService = catchAsync(async (req: Request, res: Response) => {
+  await ServiceService.deleteMyService(req.user!.id, Number(req.params.id));
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Service deleted successfully',
+  });
+});
+
 export const ServiceController = {
   getAllServices,
   getServiceById,
+  createMyService,
+  getMyServices,
+  updateMyService,
+  deleteMyService,
 };
