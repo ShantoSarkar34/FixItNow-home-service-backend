@@ -2,17 +2,19 @@ model Availability {
   id Int @id @default(autoincrement())
 
   technicianId Int
-  technician User @relation(fields: [technicianId], references: [id])
+  technician   User @relation(fields: [technicianId], references: [id])
 
   date DateTime
 
   startTime String
-  endTime String
+  endTime   String
 
   isBooked Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  technicianProfile   TechnicianProfile? @relation(fields: [technicianProfileId], references: [id])
+  technicianProfileId Int?
 
   @@map("avilablitiys")
 }

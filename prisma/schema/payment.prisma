@@ -1,13 +1,13 @@
 model Payment {
   id Int @id @default(autoincrement())
 
-  bookingId Int @unique
-  booking Booking @relation(fields: [bookingId], references: [id])
+  bookingId Int     @unique
+  booking   Booking @relation(fields: [bookingId], references: [id])
 
   customerId Int
-  customer User @relation(fields: [customerId], references: [id])
+  customer   User @relation(fields: [customerId], references: [id])
 
-  amount Decimal @db.Decimal(10,2)
+  amount Decimal @db.Decimal(10, 2)
 
   method String
 

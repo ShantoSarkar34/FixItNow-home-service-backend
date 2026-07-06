@@ -2,15 +2,15 @@ model Service {
   id Int @id @default(autoincrement())
 
   technicianId Int
-  technician User @relation(fields: [technicianId], references: [id])
+  technician   TechnicianProfile @relation(fields: [technicianId], references: [id])
 
   categoryId Int
-  category Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
 
-  title String
+  title       String
   description String
 
-  price Decimal @db.Decimal(10,2)
+  price Decimal @db.Decimal(10, 2)
 
   duration Int
 
@@ -24,8 +24,9 @@ model Service {
   updatedAt DateTime @updatedAt
 
   bookings Booking[]
-
-  reviews Review[]
+  reviews  Review[]
+  user     User?     @relation(fields: [userId], references: [id])
+  userId   Int?
 
   @@map("services")
 }

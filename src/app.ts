@@ -6,6 +6,8 @@ import globalErrorHandler from './middlewares/globalErrorHandler';
 import notFound from './middlewares/notFound';
 import { AuthRoutes } from './modules/auth/auth.route';
 import { TechnicianRoutes } from './modules/technician/technician.route';
+import { CategoryAdminRoutes, CategoryRoutes } from './modules/category/category.route';
+import { ServiceRoutes } from './modules/service/service.route';
 
 const app: Application = express();
 
@@ -26,9 +28,9 @@ app.get('/', (req: Request, res: Response) => {
 // TODO: mount module routers here, e.g.
 app.use('/api/auth', AuthRoutes);
 
-// app.use('/api/categories', CategoryRoutes);
-// app.use('/api/admin/categories', CategoryAdminRoutes);
-// app.use('/api/services', ServiceRoutes);
+app.use('/api/categories', CategoryRoutes);
+app.use('/api/admin/categories', CategoryAdminRoutes);
+app.use('/api/services', ServiceRoutes);
 app.use('/api/technicians', TechnicianRoutes);
 
 app.use(notFound);
