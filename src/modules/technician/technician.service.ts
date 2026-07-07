@@ -43,7 +43,13 @@ const getTechnicianById = async (id: number) => {
     include: {
       user: { select: { id: true, name: true, email: true, phone: true } },
       services: { include: { category: true } },
-      // reviews will be included here once the Reviews module is built
+      reviews: {
+        include: {
+          customer: { select: { id: true, name: true } },
+          service: { select: { id: true, title: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+      },
     },
   });
 };
