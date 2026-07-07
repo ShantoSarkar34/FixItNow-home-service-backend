@@ -34,3 +34,10 @@ enum AvailabilityStatus {
   AVAILABLE
   BOOKED
 }
+
+enum SlotStatus {
+  AVAILABLE
+  RESERVED
+  COMPLETED
+  CANCELLED
+}

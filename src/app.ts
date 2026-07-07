@@ -8,6 +8,7 @@ import { AuthRoutes } from './modules/auth/auth.route';
 import { TechnicianPrivateRoutes, TechnicianRoutes } from './modules/technician/technician.route';
 import { CategoryAdminRoutes, CategoryRoutes } from './modules/category/category.route';
 import { ServiceRoutes, TechnicianServiceRoutes } from './modules/service/service.route';
+import { BookingRoutes, TechnicianBookingRoutes } from './modules/booking/booking.route';
 
 
 const app: Application = express();
@@ -22,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req: Request, res: Response) => {
   res.status(httpStatus.OK).json({
     success: true,
-    message: 'FixItNow API is running...',
+    message: 'FixItNow API is running...!',
   });
 });
 
@@ -34,6 +35,8 @@ app.use('/api/services', ServiceRoutes);
 app.use('/api/technicians', TechnicianRoutes);
 app.use('/api/technician', TechnicianPrivateRoutes);
 app.use('/api/technician/services', TechnicianServiceRoutes);
+app.use('/api/bookings', BookingRoutes);
+app.use('/api/technician/bookings', TechnicianBookingRoutes);
 
 app.use(notFound);
 app.use(globalErrorHandler);

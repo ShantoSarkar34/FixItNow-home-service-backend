@@ -107,9 +107,9 @@ const setMyAvailability = async (userId: number, slots: TAvailabilitySlot[]) => 
     );
   }
 
-  // Only wipe slots that aren't already booked - booked slots must stay intact
+  // Only wipe slots that aren't already booked - reserved/completed slots must stay intact
   await prisma.availability.deleteMany({
-    where: { technicianId: profile.id, isBooked: false },
+    where: { technicianId: profile.id, status: 'AVAILABLE' },
   });
 
   await prisma.availability.createMany({
