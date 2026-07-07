@@ -7,7 +7,7 @@ import { PaymentService } from './payment.service';
 import { TCreatePaymentPayload, TPaymentFilters } from './payment.interface';
 
 const createPayment = catchAsync(async (req: Request, res: Response) => {
-  const payment = await PaymentService.createPayment(
+  const result = await PaymentService.createPayment(
     req.user!.id,
     req.body as TCreatePaymentPayload,
   );
@@ -15,8 +15,8 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: 'Payment processed successfully',
-    data: payment,
+    message: 'Checkout session created. Open the checkoutUrl in a browser to complete payment.',
+    data: result,
   });
 });
 
@@ -62,9 +62,42 @@ const handleWebhook = catchAsync(async (req: Request, res: Response) => {
   res.status(httpStatus.OK).json({ received: true });
 });
 
+// Public landing pages Stripe's Checkout redirects the browser to - no auth,
+// since Stripe doesn't carry your app's JWT cookie when it redirects the user.
+const paymentSuccess = catchAsync(async (req: Request, res: Response) => {
+  const sessionId = req.query.session_id as string | undefined;
+  const payment = sessionId
+    ? await PaymentService.syncPaymentFromStripeSession(sessionId)
+    : null;
+  const status = payment?.status ?? 'PROCESSING';
+
+  res.status(httpStatus.OK).send(`
+    <html>
+      <body style="font-family: sans-serif; text-align: center; margin-top: 80px;">
+        <h1>${status === 'COMPLETED' ? ' Payment Successful' : '⏳ Payment Processing'}</h1>
+        <p>Booking status will update shortly once the payment webhook is received.</p>
+        ${sessionId ? `<p style="color:#888">Session: ${sessionId}</p>` : ''}
+      </body>
+    </html>
+  `);
+});
+
+const paymentCancel = catchAsync(async (req: Request, res: Response) => {
+  res.status(httpStatus.OK).send(`
+    <html>
+      <body style="font-family: sans-serif; text-align: center; margin-top: 80px;">
+        <h1> Payment Cancelled</h1>
+        <p>You can try paying again from your booking.</p>
+      </body>
+    </html>
+  `);
+});
+
 export const PaymentController = {
   createPayment,
   getPayments,
   getPaymentById,
   handleWebhook,
+  paymentSuccess,
+  paymentCancel,
 };

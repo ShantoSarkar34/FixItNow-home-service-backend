@@ -18,7 +18,7 @@ const paymentIncludes = {
 } satisfies Prisma.PaymentInclude;
 
 const createPayment = async (customerId: number, payload: TCreatePaymentPayload) => {
-  const { bookingId, paymentMethod } = payload;
+  const { bookingId } = payload;
 
   if (!bookingId) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'bookingId is required');
@@ -51,42 +51,83 @@ const createPayment = async (customerId: number, payload: TCreatePaymentPayload)
   const amount = Number(booking.service.price);
   const amountInCents = Math.round(amount * 100);
 
-  let paymentIntent: Stripe.PaymentIntent;
+  let session: Stripe.Checkout.Session;
 
   try {
-    // Using a Stripe test payment-method token ('pm_card_visa') with confirm: true
-    // so this can be fully exercised from Postman - no frontend/Stripe.js needed.
-    // In a real client-facing app, you'd instead return the client_secret here and
-    // let the frontend confirm the payment with Stripe.js/Elements.
-    paymentIntent = await stripe.paymentIntents.create({
-      amount: amountInCents,
-      currency: 'usd',
+    session = await stripe.checkout.sessions.create({
+      mode: 'payment',
       payment_method_types: ['card'],
-      payment_method: paymentMethod || 'pm_card_visa',
-      confirm: true,
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: { name: booking.service.title },
+            unit_amount: amountInCents,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: `${config.app_base_url}/api/payments/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${config.app_base_url}/api/payments/cancel`,
       metadata: {
         bookingId: String(booking.id),
         customerId: String(customerId),
       },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Payment failed';
+    const message = error instanceof Error ? error.message : 'Payment session creation failed';
     throw new ApiError(httpStatus.BAD_REQUEST, `Stripe error: ${message}`);
   }
 
-  return prisma.payment.create({
+  const payment = await prisma.payment.create({
     data: {
       bookingId: booking.id,
       customerId,
       amount,
-      method: paymentIntent.payment_method_types?.[0] || 'card',
+      method: 'card',
       provider: 'STRIPE',
-      transactionId: paymentIntent.id,
-      status: paymentIntent.status === 'succeeded' ? 'COMPLETED' : 'PENDING',
-      paidAt: paymentIntent.status === 'succeeded' ? new Date() : null,
+      transactionId: session.id,
+      status: 'PENDING',
     },
     include: paymentIncludes,
   });
+
+  // checkoutUrl is what the customer opens in a browser to actually pay
+  return { payment, checkoutUrl: session.url };
+};
+
+const getPaymentBySessionId = async (sessionId: string) => {
+  return prisma.payment.findUnique({
+    where: { transactionId: sessionId },
+    include: paymentIncludes,
+  });
+};
+
+// Called from the success-page route as a fallback/self-heal in case the
+// webhook hasn't been delivered yet (e.g. stripe listen wasn't running, or its
+// signing secret is stale). Not a replacement for the webhook - just makes
+// local testing far less fragile.
+const syncPaymentFromStripeSession = async (sessionId: string) => {
+  const payment = await prisma.payment.findUnique({ where: { transactionId: sessionId } });
+
+  if (!payment) {
+    return null;
+  }
+
+  if (payment.status === 'COMPLETED') {
+    return payment;
+  }
+
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+  if (session.payment_status === 'paid') {
+    return prisma.payment.update({
+      where: { transactionId: sessionId },
+      data: { status: 'COMPLETED', paidAt: new Date() },
+    });
+  }
+
+  return payment;
 };
 
 const handleWebhookEvent = async (rawBody: Buffer, signature: string) => {
@@ -113,20 +154,20 @@ const handleWebhookEvent = async (rawBody: Buffer, signature: string) => {
     );
   }
 
-  if (event.type === 'payment_intent.succeeded') {
-    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object as Stripe.Checkout.Session;
 
     await prisma.payment.updateMany({
-      where: { transactionId: paymentIntent.id },
+      where: { transactionId: session.id },
       data: { status: 'COMPLETED', paidAt: new Date() },
     });
   }
 
-  if (event.type === 'payment_intent.payment_failed') {
-    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+  if (event.type === 'checkout.session.async_payment_failed') {
+    const session = event.data.object as Stripe.Checkout.Session;
 
     await prisma.payment.updateMany({
-      where: { transactionId: paymentIntent.id },
+      where: { transactionId: session.id },
       data: { status: 'FAILED' },
     });
   }
@@ -181,4 +222,6 @@ export const PaymentService = {
   handleWebhookEvent,
   getPayments,
   getPaymentById,
+  getPaymentBySessionId,
+  syncPaymentFromStripeSession,
 };

@@ -11,6 +11,7 @@ const config = {
   env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 5000,
   database_url: process.env.DATABASE_URL,
+  app_base_url: process.env.APP_BASE_URL || `http://localhost:${process.env.PORT || 5000}`,
 
   jwt: {
     access_secret: process.env.JWT_ACCESS_SECRET as string,
