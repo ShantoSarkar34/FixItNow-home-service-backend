@@ -166,6 +166,15 @@ const deleteMyService = async (userId: number, serviceId: number) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Service not found');
   }
 
+  const bookingCount = await prisma.booking.count({ where: { serviceId } });
+
+  if (bookingCount > 0) {
+    throw new ApiError(
+      httpStatus.CONFLICT,
+      'Cannot delete a service that has existing bookings. Set isActive to false instead.',
+    );
+  }
+
   await prisma.service.delete({ where: { id: serviceId } });
 
   return null;
