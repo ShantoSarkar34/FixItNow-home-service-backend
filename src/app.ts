@@ -11,6 +11,7 @@ import { ServiceRoutes, TechnicianServiceRoutes } from './modules/service/servic
 import { BookingRoutes, TechnicianBookingRoutes } from './modules/booking/booking.route';
 import { PaymentRoutes } from './modules/payment/payment.route';
 import { ReviewRoutes } from './modules/review/review.route';
+import { AdminRoutes } from './modules/admin/admin.route';
 
 
 const app: Application = express();
@@ -41,6 +42,7 @@ app.use('/api/bookings', BookingRoutes);
 app.use('/api/technician/bookings', TechnicianBookingRoutes);
 app.use('/api/payments', PaymentRoutes);
 app.use('/api/reviews', ReviewRoutes);
+app.use('/api/admin', AdminRoutes);
 
 
 app.use(notFound);
