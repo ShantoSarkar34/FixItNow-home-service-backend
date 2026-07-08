@@ -5,7 +5,7 @@
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "src/server.ts",
+  "main": "dist/server.ts",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
