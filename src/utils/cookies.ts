@@ -4,7 +4,7 @@ import config from '../config';
 const cookieOptions: CookieOptions = {
   httpOnly: true,
   secure: config.env === 'production',
-  sameSite: 'lax',
+  sameSite: config.env === 'production' ? 'none' : 'lax',
 };
 
 export const setAuthCookies = (

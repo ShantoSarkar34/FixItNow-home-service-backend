@@ -11,7 +11,10 @@ const config = {
   env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 5000,
   database_url: process.env.DATABASE_URL,
-  app_base_url: process.env.APP_BASE_URL || `http://localhost:${process.env.PORT || 5000}`,
+  app_base_url: (
+    process.env.APP_BASE_URL || `http://localhost:${process.env.PORT || 5000}`
+  ).replace(/\/+$/, ''),
+  frontend_url: process.env.FRONTEND_URL,
 
   jwt: {
     access_secret: process.env.JWT_ACCESS_SECRET as string,
@@ -22,6 +25,7 @@ const config = {
 
   bcrypt_salt_rounds: Number(process.env.BCRYPT_SALT_ROUNDS) || 12,
 
+  // Filled in when we build the Payments module
   payment: {
     stripe_secret_key: process.env.STRIPE_SECRET_KEY,
     stripe_webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,

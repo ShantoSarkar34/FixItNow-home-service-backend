@@ -8,7 +8,7 @@ This README is written to be read cold, months later, by you — it covers every
 
 ## Live server url
 
- [https://](https://fixitnow-server.vercel.app/)
+ [Live Link](https://fixitnow-server.vercel.app/)
 
 ---
 ## Table of Contents

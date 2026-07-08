@@ -12,11 +12,20 @@ import { BookingRoutes, TechnicianBookingRoutes } from './modules/booking/bookin
 import { PaymentRoutes } from './modules/payment/payment.route';
 import { ReviewRoutes } from './modules/review/review.route';
 import { AdminRoutes } from './modules/admin/admin.route';
+import config from './config';
 
 
 const app: Application = express();
 
 // Core middlewares
+app.use(
+  cors({
+    origin: config.env === 'production' ? config.frontend_url : true,
+    credentials: true,
+  }),
+);
+app.use(cookieParser());
+
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
