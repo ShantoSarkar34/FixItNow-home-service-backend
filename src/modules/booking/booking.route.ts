@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { BookingController } from './booking.controller';
-import auth from '../../middlewares/auth';
+import { BookingController } from './booking.controller.js';
+import auth from '../../middlewares/auth.js';
 
 // Mounted at /api/bookings
 const router = Router();

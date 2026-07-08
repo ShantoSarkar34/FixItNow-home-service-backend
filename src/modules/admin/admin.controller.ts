@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import catchAsync from '../../utils/catchAsync';
-import sendResponse from '../../utils/sendResponse';
-import { AdminService } from './admin.service';
-import { BookingService } from '../booking/booking.service';
-import { TUserFilters } from './admin.interface';
-import { TBookingFilters } from '../booking/booking.interface';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import { AdminService } from './admin.service.js';
+import { BookingService } from '../booking/booking.service.js';
+import { TUserFilters } from './admin.interface.js';
+import { TBookingFilters } from '../booking/booking.interface.js';
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const users = await AdminService.getAllUsers(req.query as unknown as TUserFilters);

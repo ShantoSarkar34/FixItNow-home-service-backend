@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
-import prisma from '../../lib/prisma';
-import ApiError from '../../utils/ApiError';
+import prisma from '../../lib/prisma.js';
+import ApiError from '../../utils/ApiError.js';
 import { Prisma } from '../../../prisma/generated/index.js';
-import { TCreateReviewPayload, TReviewFilters } from './review.interface';
+import { TCreateReviewPayload, TReviewFilters } from './review.interface.js';
 
 const reviewIncludes = {
   customer: { select: { id: true, name: true } },

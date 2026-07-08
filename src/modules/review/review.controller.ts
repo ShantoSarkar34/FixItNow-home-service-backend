@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import catchAsync from '../../utils/catchAsync';
-import sendResponse from '../../utils/sendResponse';
-import { ReviewService } from './review.service';
-import { TCreateReviewPayload, TReviewFilters } from './review.interface';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import { ReviewService } from './review.service.js';
+import { TCreateReviewPayload, TReviewFilters } from './review.interface.js';
 
 const createReview = catchAsync(async (req: Request, res: Response) => {
   const review = await ReviewService.createReview(

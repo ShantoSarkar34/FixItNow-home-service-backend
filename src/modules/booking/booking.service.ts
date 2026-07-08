@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
-import prisma from '../../lib/prisma';
-import ApiError from '../../utils/ApiError';
+import prisma from '../../lib/prisma.js';
+import ApiError from '../../utils/ApiError.js';
 import { Prisma, BookingStatus, Role } from '../../../prisma/generated/index.js';
-import { TBookingFilters, TCreateBookingPayload } from './booking.interface';
+import { TBookingFilters, TCreateBookingPayload } from './booking.interface.js';
 
 const bookingIncludes = {
   customer: { select: { id: true, name: true, email: true, phone: true } },

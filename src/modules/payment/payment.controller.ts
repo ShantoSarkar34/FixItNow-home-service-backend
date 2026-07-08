@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import catchAsync from '../../utils/catchAsync';
-import sendResponse from '../../utils/sendResponse';
-import ApiError from '../../utils/ApiError';
-import { PaymentService } from './payment.service';
-import { TCreatePaymentPayload, TPaymentFilters } from './payment.interface';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import ApiError from '../../utils/ApiError.js';
+import { PaymentService } from './payment.service.js';
+import { TCreatePaymentPayload, TPaymentFilters } from './payment.interface.js';
 
 const createPayment = catchAsync(async (req: Request, res: Response) => {
   const result = await PaymentService.createPayment(
@@ -74,7 +74,7 @@ const paymentSuccess = catchAsync(async (req: Request, res: Response) => {
   res.status(httpStatus.OK).send(`
     <html>
       <body style="font-family: sans-serif; text-align: center; margin-top: 80px;">
-        <h1>${status === 'COMPLETED' ? ' Payment Successful' : '⏳ Payment Processing'}</h1>
+        <h1>${status === 'COMPLETED' ? '.js Payment Successful' : '⏳ Payment Processing'}</h1>
         <p>Booking status will update shortly once the payment webhook is received.</p>
         ${sessionId ? `<p style="color:#888">Session: ${sessionId}</p>` : ''}
       </body>

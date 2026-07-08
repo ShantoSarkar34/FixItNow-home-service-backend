@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import catchAsync from '../../utils/catchAsync';
-import sendResponse from '../../utils/sendResponse';
-import ApiError from '../../utils/ApiError';
-import { setAuthCookies, clearAuthCookies } from '../../utils/cookies';
-import { AuthService } from './auth.service';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import ApiError from '../../utils/ApiError.js';
+import { setAuthCookies, clearAuthCookies } from '../../utils/cookies.js';
+import { AuthService } from './auth.service.js';
 
 const register = catchAsync(async (req: Request, res: Response) => {
   const { accessToken, refreshToken, user } = await AuthService.registerUser(req.body);
@@ -61,7 +61,7 @@ const logout = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getMe = catchAsync(async (req: Request, res: Response) => {
-  const user = await AuthService.getMe(req.user!.id);
+  const user = await AuthService.getMe(req.user!.id)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

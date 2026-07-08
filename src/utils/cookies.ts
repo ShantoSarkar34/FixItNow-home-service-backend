@@ -1,5 +1,5 @@
 import { CookieOptions, Response } from 'express';
-import config from '../config';
+import config from '../config/index.js';
 
 const cookieOptions: CookieOptions = {
   httpOnly: true,

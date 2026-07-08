@@ -3,19 +3,20 @@
     "rootDir": "./src",
     "outDir": "./dist",
 
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "target": "es2023",
+    "target": "ES2022",
+
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
     "types": ["node"],
+
+    "strict": true,
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    "noUncheckedIndexedAccess": true,
-    "strict": true,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true
+
+    "skipLibCheck": true,
+    "isolatedModules": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "prisma/generated"]

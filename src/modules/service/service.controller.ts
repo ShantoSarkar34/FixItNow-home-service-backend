@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import catchAsync from '../../utils/catchAsync';
-import sendResponse from '../../utils/sendResponse';
-import ApiError from '../../utils/ApiError';
-import { ServiceService } from './service.service';
-import { TServiceFilters } from './service.interface';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import ApiError from '../../utils/ApiError.js';
+import { ServiceService } from './service.service.js';
+import { TServiceFilters } from './service.interface.js';
 
 const getAllServices = catchAsync(async (req: Request, res: Response) => {
   const services = await ServiceService.getAllServices(req.query as unknown as TServiceFilters);

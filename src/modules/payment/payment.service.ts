@@ -1,11 +1,11 @@
 import httpStatus from 'http-status';
 import Stripe from 'stripe';
-import prisma from '../../lib/prisma';
-import stripe from '../../lib/stripe';
-import ApiError from '../../utils/ApiError';
-import config from '../../config';
+import prisma from '../../lib/prisma.js';
+import stripe from '../../lib/stripe.js';
+import ApiError from '../../utils/ApiError.js';
+import config from '../../config/index.js';
 import { Prisma, Role, PaymentStatus } from '../../../prisma/generated/index.js';
-import { TCreatePaymentPayload, TPaymentFilters } from './payment.interface';
+import { TCreatePaymentPayload, TPaymentFilters } from './payment.interface.js';
 
 const paymentIncludes = {
   booking: {

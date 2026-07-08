@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { TechnicianController } from './technician.controller';
-import auth from '../../middlewares/auth';
+import { TechnicianController } from './technician.controller.js';
+import auth from '../../middlewares/auth.js';
 
 // Public: GET /api/technicians, GET /api/technicians/:id
 const router = Router();

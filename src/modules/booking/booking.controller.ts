@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import catchAsync from '../../utils/catchAsync';
-import sendResponse from '../../utils/sendResponse';
-import { BookingService } from './booking.service';
-import { TBookingFilters, TCreateBookingPayload } from './booking.interface';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import { BookingService } from './booking.service.js';
+import { TBookingFilters, TCreateBookingPayload } from './booking.interface.js';
 
 const createBooking = catchAsync(async (req: Request, res: Response) => {
   const booking = await BookingService.createBooking(

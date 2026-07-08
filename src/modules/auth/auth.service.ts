@@ -1,10 +1,10 @@
 import bcrypt from 'bcryptjs';
 import httpStatus from 'http-status';
-import prisma from '../../lib/prisma';
-import ApiError from '../../utils/ApiError';
-import config from '../../config';
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../utils/jwt';
-import { TLoginPayload, TRegisterPayload } from './auth.interface';
+import prisma from '../../lib/prisma.js';
+import ApiError from '../../utils/ApiError.js';
+import config from '../../config/index.js';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../utils/jwt.js';
+import { TLoginPayload, TRegisterPayload } from './auth.interface.js';
 
 const ALLOWED_REGISTER_ROLES = ['CUSTOMER', 'TECHNICIAN'];
 

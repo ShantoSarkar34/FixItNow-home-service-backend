@@ -1,8 +1,8 @@
 import { ErrorRequestHandler } from 'express';
 import httpStatus from 'http-status';
 import { Prisma } from '../../prisma/generated/index.js';
-import ApiError from '../utils/ApiError';
-import config from '../config';
+import ApiError from '../utils/ApiError.js';
+import config from '../config/index.js';
 
 type TErrorSource = {
   path: string | number;

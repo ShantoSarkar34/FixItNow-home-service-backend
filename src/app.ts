@@ -2,17 +2,17 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import httpStatus from 'http-status';
-import globalErrorHandler from './middlewares/globalErrorHandler';
-import notFound from './middlewares/notFound';
-import { AuthRoutes } from './modules/auth/auth.route';
-import { TechnicianPrivateRoutes, TechnicianRoutes } from './modules/technician/technician.route';
-import { CategoryAdminRoutes, CategoryRoutes } from './modules/category/category.route';
-import { ServiceRoutes, TechnicianServiceRoutes } from './modules/service/service.route';
-import { BookingRoutes, TechnicianBookingRoutes } from './modules/booking/booking.route';
-import { PaymentRoutes } from './modules/payment/payment.route';
-import { ReviewRoutes } from './modules/review/review.route';
-import { AdminRoutes } from './modules/admin/admin.route';
-import config from './config';
+import globalErrorHandler from './middlewares/globalErrorHandler.js';
+import notFound from './middlewares/notFound.js';
+import { AuthRoutes } from './modules/auth/auth.route.js';
+import { TechnicianPrivateRoutes, TechnicianRoutes } from './modules/technician/technician.route.js';
+import { CategoryAdminRoutes, CategoryRoutes } from './modules/category/category.route.js';
+import { ServiceRoutes, TechnicianServiceRoutes } from './modules/service/service.route.js';
+import { BookingRoutes, TechnicianBookingRoutes } from './modules/booking/booking.route.js';
+import { PaymentRoutes } from './modules/payment/payment.route.js';
+import { ReviewRoutes } from './modules/review/review.route.js';
+import { AdminRoutes } from './modules/admin/admin.route.js';
+import config from './config/index.js';
 
 
 const app: Application = express();

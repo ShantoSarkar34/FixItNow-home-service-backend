@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
-import prisma from '../../lib/prisma';
-import ApiError from '../../utils/ApiError';
-import { TCreateCategoryPayload } from './category.interface';
+import prisma from '../../lib/prisma.js';
+import ApiError from '../../utils/ApiError.js';
+import { TCreateCategoryPayload } from './category.interface.js';
 
 const createCategory = async (payload: TCreateCategoryPayload) => {
   if (!payload.name) {

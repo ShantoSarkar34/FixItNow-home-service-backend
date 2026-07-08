@@ -1,12 +1,12 @@
 import httpStatus from 'http-status';
-import prisma from '../../lib/prisma';
-import ApiError from '../../utils/ApiError';
+import prisma from '../../lib/prisma.js';
+import ApiError from '../../utils/ApiError.js';
 import { Prisma } from '../../../prisma/generated/index.js';
 import {
   TAvailabilitySlot,
   TTechnicianFilters,
   TUpsertTechnicianProfilePayload,
-} from './technician.interface';
+} from './technician.interface.js';
 
 const getAllTechnicians = async (filters: TTechnicianFilters) => {
   const { categoryId, location, search } = filters;

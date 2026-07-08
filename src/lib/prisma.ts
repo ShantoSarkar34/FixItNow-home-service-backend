@@ -1,6 +1,6 @@
 import { PrismaClient } from '../../prisma/generated/index.js';
 import { PrismaPg } from '@prisma/adapter-pg';
-import config from '../config';
+import config from '../config/index.js';
 
 // Prevents multiple PrismaClient instances during dev hot-reloads
 const globalForPrisma = global as unknown as { prisma: PrismaClient };

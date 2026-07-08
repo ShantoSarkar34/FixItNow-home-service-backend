@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
-import prisma from '../../lib/prisma';
-import ApiError from '../../utils/ApiError';
+import prisma from '../../lib/prisma.js';
+import ApiError from '../../utils/ApiError.js';
 import { Prisma, Role, UserStatus } from '../../../prisma/generated/index.js';
-import { TUpdateUserStatusPayload, TUserFilters } from './admin.interface';
+import { TUpdateUserStatusPayload, TUserFilters } from './admin.interface.js';
 
 const getAllUsers = async (filters: TUserFilters) => {
   const { role, status, search } = filters;

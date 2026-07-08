@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { PaymentController } from './payment.controller';
-import auth from '../../middlewares/auth';
+import { PaymentController } from './payment.controller.js';
+import auth from '../../middlewares/auth.js';
 
 const router = Router();
 

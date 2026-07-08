@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import config from '../config';
+import config from '../config/index.js';
 
 if (!config.payment.stripe_secret_key) {
   throw new Error('STRIPE_SECRET_KEY is not set. Did you add it to your .env file?');

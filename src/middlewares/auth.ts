@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
-import ApiError from '../utils/ApiError';
-import { verifyAccessToken } from '../utils/jwt';
+import ApiError from '../utils/ApiError.js';
+import { verifyAccessToken } from '../utils/jwt.js';
 import { Role } from '../../prisma/generated/index.js';
 
 /**
