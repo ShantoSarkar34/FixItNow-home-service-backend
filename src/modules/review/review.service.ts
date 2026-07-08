@@ -58,7 +58,7 @@ const createReview = async (customerId: number, payload: TCreateReviewPayload) =
       data: {
         bookingId: booking.id,
         customerId,
-        technicianId: technicianProfile.id,
+        technicianId: booking.technicianId,
         serviceId: booking.serviceId,
         rating,
         comment,
@@ -69,7 +69,7 @@ const createReview = async (customerId: number, payload: TCreateReviewPayload) =
     // Recalculate the technician's aggregate rating from every review they have,
     // inside the same transaction so it can never drift out of sync with reality.
     const aggregate = await tx.review.aggregate({
-      where: { technicianId: technicianProfile.id },
+      where: { technicianId: booking.technicianId },
       _avg: { rating: true },
       _count: { rating: true },
     });
