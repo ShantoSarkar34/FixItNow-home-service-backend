@@ -1,12 +1,10 @@
 import bcrypt from 'bcryptjs';
 import httpStatus from 'http-status';
+import prisma from '../../lib/prisma';
 import ApiError from '../../utils/ApiError';
 import config from '../../config';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../utils/jwt';
-import prisma from '../../lib/prisma';
 import { TLoginPayload, TRegisterPayload } from './auth.interface';
-
-
 
 const ALLOWED_REGISTER_ROLES = ['CUSTOMER', 'TECHNICIAN'];
 
@@ -104,7 +102,7 @@ const refreshAccessToken = async (token: string) => {
   return { accessToken };
 };
 
-const getMe = async (userId: string) => {
+const getMe = async (userId: number) => {
   const user = await prisma.user.findUnique({ where: { id: userId } });
 
   if (!user) {
