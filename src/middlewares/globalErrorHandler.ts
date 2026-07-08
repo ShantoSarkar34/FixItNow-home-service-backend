@@ -32,6 +32,15 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
       statusCode = httpStatus.NOT_FOUND;
       message = 'Resource not found';
       errorSources = [{ path: '', message: (err.meta?.cause as string) || err.message }];
+    } else if (err.code === 'P2003') {
+      statusCode = httpStatus.CONFLICT;
+      message = 'This action is blocked by related records';
+      errorSources = [
+        {
+          path: (err.meta?.field_name as string) || '',
+          message: 'Cannot complete this action because related records still reference it',
+        },
+      ];
     } else {
       statusCode = httpStatus.BAD_REQUEST;
       message = 'Database Error';
