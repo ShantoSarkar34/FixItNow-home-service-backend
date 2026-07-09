@@ -4,12 +4,6 @@ import ApiError from '../utils/ApiError.js';
 import { verifyAccessToken } from '../utils/jwt.js';
 import { Role } from '../../prisma/generated/index.js';
 
-/**
- * Usage:
- *   auth()                          -> any authenticated user
- *   auth('ADMIN')                   -> only admins
- *   auth('CUSTOMER', 'TECHNICIAN')  -> customers or technicians
- */
 const auth = (...allowedRoles: Role[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     try {
