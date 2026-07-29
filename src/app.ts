@@ -18,11 +18,22 @@ import config from './config/index.js';
 const app: Application = express();
 
 // Core middlewares
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://fixitnow-service.vercel.app",
+];
+
 app.use(
   cors({
-    origin: config.env === 'production' ? config.frontend_url : true,
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-  }),
+  })
 );
 
 app.use(cookieParser());
