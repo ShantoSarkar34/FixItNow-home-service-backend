@@ -6,7 +6,7 @@ import globalErrorHandler from './middlewares/globalErrorHandler.js';
 import notFound from './middlewares/notFound.js';
 import { AuthRoutes } from './modules/auth/auth.route.js';
 import { TechnicianPrivateRoutes, TechnicianRoutes } from './modules/technician/technician.route.js';
-import { CategoryAdminRoutes } from './modules/category/category.route.js';
+import { CategoryAdminRoutes, CategoryRoutes } from './modules/category/category.route.js';
 import { ServiceRoutes, TechnicianServiceRoutes } from './modules/service/service.route.js';
 import { BookingRoutes, TechnicianBookingRoutes } from './modules/booking/booking.route.js';
 import { PaymentRoutes } from './modules/payment/payment.route.js';
@@ -50,6 +50,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // TODO: mount module routers here, e.g.
 app.use('/api/auth', AuthRoutes);
+app.use('/api/categories', CategoryRoutes);
 app.use('/api/admin/categories', CategoryAdminRoutes);
 app.use('/api/services', ServiceRoutes);
 app.use('/api/technicians', TechnicianRoutes);
