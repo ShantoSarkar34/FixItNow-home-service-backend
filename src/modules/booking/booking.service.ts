@@ -154,9 +154,19 @@ const getBookingById = async (requester: { id: number; role: Role }, id: number)
     include: bookingIncludes,
   });
 
+  console.log("Requester:", requester);
+
+
+
   if (!booking) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');
   }
+  console.log({
+  bookingId: booking.id,
+  bookingTechnicianId: booking.technicianId,
+  requesterId: requester.id,
+  role: requester.role,
+});
 
   const canAccess =
     requester.role === 'ADMIN' ||
@@ -168,6 +178,8 @@ const getBookingById = async (requester: { id: number; role: Role }, id: number)
   }
 
   return booking;
+
+  
 };
 
 const cancelBooking = async (customerId: number, id: number) => {

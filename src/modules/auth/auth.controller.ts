@@ -3,6 +3,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync.js";
 import sendResponse from "../../utils/sendResponse.js";
 import ApiError from "../../utils/ApiError.js";
+import config from "../../config/index.js";
 import { setAuthCookies, clearAuthCookies } from "../../utils/cookies.js";
 import { AuthService } from "./auth.service.js";
 
@@ -92,6 +93,88 @@ const updateMe = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// ===================== OAUTH =====================
+// These redirect the browser rather than returning JSON, including on failure -
+// mid-OAuth-dance the user's browser is navigating, not making an API call that
+// expects a JSON error body. Errors are surfaced via a `?error=` query param on
+// the frontend callback URL instead of throwing to the global error handler.
+
+const googleRedirect = (req: Request, res: Response) => {
+  res.redirect(AuthService.getGoogleAuthUrl());
+};
+
+const googleCallback = catchAsync(async (req: Request, res: Response) => {
+  const { code } = req.query;
+
+  if (!code || typeof code !== "string") {
+    return res.redirect(
+      `${config.frontend_url}/auth/callback?error=missing_code`
+    );
+  }
+
+  try {
+    const { accessToken, refreshToken } =
+      await AuthService.handleGoogleCallback(code);
+    setAuthCookies(res, { accessToken, refreshToken });
+    res.redirect(`${config.frontend_url}/auth/callback`);
+  } catch (error) {
+    console.error(
+      "Google OAuth callback failed:",
+      error instanceof Error ? error.message : error
+    );
+    res.redirect(`${config.frontend_url}/auth/callback?error=oauth_failed`);
+  }
+});
+
+const facebookRedirect = (req: Request, res: Response) => {
+  res.redirect(AuthService.getFacebookAuthUrl());
+};
+
+const facebookCallback = catchAsync(async (req: Request, res: Response) => {
+  const { code } = req.query;
+
+  if (!code || typeof code !== "string") {
+    return res.redirect(
+      `${config.frontend_url}/auth/callback?error=missing_code`
+    );
+  }
+
+  try {
+    const { accessToken, refreshToken } =
+      await AuthService.handleFacebookCallback(code);
+    setAuthCookies(res, { accessToken, refreshToken });
+    res.redirect(`${config.frontend_url}/auth/callback`);
+  } catch (error) {
+    console.error(
+      "Facebook OAuth callback failed:",
+      error instanceof Error ? error.message : error
+    );
+    res.redirect(`${config.frontend_url}/auth/callback?error=oauth_failed`);
+  }
+});
+
+// ===================== PASSWORD RESET =====================
+
+const forgotPassword = catchAsync(async (req: Request, res: Response) => {
+  const result = await AuthService.forgotPassword(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: result.message,
+  });
+});
+
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  const result = await AuthService.resetPassword(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: result.message,
+  });
+});
+
 export const AuthController = {
   register,
   login,
@@ -99,4 +182,10 @@ export const AuthController = {
   logout,
   getMe,
   updateMe,
+  googleRedirect,
+  googleCallback,
+  facebookRedirect,
+  facebookCallback,
+  forgotPassword,
+  resetPassword,
 };

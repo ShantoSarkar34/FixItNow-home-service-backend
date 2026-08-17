@@ -2,12 +2,16 @@ model User {
   id       Int        @id @default(autoincrement())
   name     String
   email    String     @unique
-  password String
+  password String?
   role     Role
   phone    String?
   photo    String?
   address  String?
   status   UserStatus @default(ACTIVE)
+
+  authProvider AuthProvider @default(LOCAL)
+  googleId     String?      @unique
+  facebookId   String?      @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
